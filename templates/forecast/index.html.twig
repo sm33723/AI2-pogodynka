@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Forecast index{% endblock %}
+
+{% block body %}
+    <h1>Forecast index</h1>
+    <div class="table-responsive"><table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Timestamp</th>
+                <th>Temperature</th>
+                <th>Wind_speed</th>
+                <th>Wind_direction</th>
+                <th>Humidity</th>
+                <th>Air_quality</th>
+                <th>Cloud_cover</th>
+                <th>Cloud_ceiling</th>
+                <th>Rain</th>
+                <th>Visibility</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for forecast in forecasts %}
+            <tr>
+                <td>{{ forecast.id }}</td>
+                <td>{{ forecast.timestamp ? forecast.timestamp|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ forecast.temperature }}</td>
+                <td>{{ forecast.windSpeed }}</td>
+                <td>{{ forecast.windDirection }}</td>
+                <td>{{ forecast.humidity }}</td>
+                <td>{{ forecast.airQuality }}</td>
+                <td>{{ forecast.cloudCover }}</td>
+                <td>{{ forecast.cloudCeiling }}</td>
+                <td>{{ forecast.rain }}</td>
+                <td>{{ forecast.visibility }}</td>
+                <td>
+                    <a class="btn btn-outline-warning" href="{{ path('app_forecast_edit', {'id': forecast.id}) }}">edit</a>
+                    <a class="btn btn-info" href="{{ path('app_forecast_show', {'id': forecast.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table></div>
+
+    <a class="btn btn-outline-success" href="{{ path('app_forecast_new') }}">Create new</a>
+{% endblock %}

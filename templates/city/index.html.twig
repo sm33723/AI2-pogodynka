@@ -25,7 +25,9 @@
                 <td>{{ city.lat }}</td>
                 <td>{{ city.lot }}</td>
                 <td>
-                    <a class="btn btn-outline-warning" href="{{ path('app_city_edit', {'id': city.id}) }}">edit</a>
+                    {% if is_granted('ROLE_CITY_EDIT') %}
+                        <a class="btn btn-outline-warning" href="{{ path('app_city_edit', {'id': city.id}) }}">edit</a>
+                    {% endif %}
                     <a class="btn btn-info" href="{{ path('app_city_show', {'id': city.id}) }}">show</a>
                 </td>
             </tr>
@@ -36,6 +38,7 @@
         {% endfor %}
         </tbody>
     </table></div>
-
-    <a class="btn btn-outline-success" href="{{ path('app_city_new') }}">Create new</a>
+    {% if is_granted('ROLE_CITY_NEW') %}
+        <a class="btn btn-outline-success" href="{{ path('app_city_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}

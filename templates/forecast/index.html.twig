@@ -18,6 +18,7 @@
                 <th>Cloud_ceiling</th>
                 <th>Rain</th>
                 <th>Visibility</th>
+                <th></th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -35,8 +36,11 @@
                 <td>{{ forecast.cloudCeiling }}</td>
                 <td>{{ forecast.rain }}</td>
                 <td>{{ forecast.visibility }}</td>
+                <td>{{ forecast.city.name }}</td>
                 <td>
-                    <a class="btn btn-outline-warning" href="{{ path('app_forecast_edit', {'id': forecast.id}) }}">edit</a>
+                    {% if is_granted('ROLE_FORECAST_EDIT') %}
+                        <a class="btn btn-outline-warning" href="{{ path('app_forecast_edit', {'id': forecast.id}) }}">edit</a>
+                    {% endif %}
                     <a class="btn btn-info" href="{{ path('app_forecast_show', {'id': forecast.id}) }}">show</a>
                 </td>
             </tr>
@@ -47,6 +51,7 @@
         {% endfor %}
         </tbody>
     </table></div>
-
-    <a class="btn btn-outline-success" href="{{ path('app_forecast_new') }}">Create new</a>
+    {% if is_granted('ROLE_FORECAST_NEW') %}
+        <a class="btn btn-outline-success" href="{{ path('app_forecast_new') }}">Create new</a>
+    {% endif %}
 {% endblock %}

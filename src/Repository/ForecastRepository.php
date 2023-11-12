@@ -24,18 +24,36 @@ class ForecastRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Forecast::class);
     }
-    public function findByCity(City $city)
-    {
-        $qb = $this->createQueryBuilder('m');
-        $qb->where('m.city = :city')
-            ->setParameter('city', $city)
-            ->andWhere('m.timestamp > :now')
-            ->setParameter('now', new DateTime("now"));
+    
+   public function findByCity(City $city)
+   {
+       $qb = $this->createQueryBuilder('f');
+       $qb->where('f.city = :city')
+           ->setParameter('city', $city)
+//            ->andWhere('f.timestamp > :now')
+//            ->setParameter('now', new DateTime("now"))
+           ->orderBy('f.timestamp');
 
-        $query = $qb->getQuery();
-        $result = $query->getResult();
-        return $result;
-    }
+       $query = $qb->getQuery();
+       $result = $query->getResult();
+       return $result;
+   }
+
+   public function findByCountryCodeAndCityName($country_code,$city_name){
+       $qb = $this->createQueryBuilder('f');
+       $qb->join('f.city','c')
+          ->andWhere('LOWER(c.name) = LOWER(:city_name)')
+          ->setParameter("city_name",$city_name)
+          ->andWhere('LOWER(c.country) = LOWER(:country_code)')
+//            ->andWhere('f.timestamp > :now')
+//            ->setParameter('now', new DateTime("now"))
+          ->setParameter("country_code",$country_code)
+          ->orderBy('f.timestamp');
+
+       $query = $qb->getQuery();
+       $result = $query->getResult();
+       return $result;
+   }
 
 //    /**
 //     * @return Forecast[] Returns an array of Forecast objects

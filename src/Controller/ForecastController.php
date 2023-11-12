@@ -2,19 +2,47 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
 use App\Entity\Forecast;
 use App\Form\ForecastType;
 use App\Repository\ForecastRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+use App\Service\ForecastUtil;
 #[Route('/forecast')]
 class ForecastController extends AbstractController
 {
+    #[Route('/city/{country_code}/{city_name}', name:"app_forecast_for_country_city" , methods: ['GET'])]
+    public function byCity(
+        Request $request,
+        #[MapEntity(mapping:['country_code'=>'country','city_name'=>'name']) ] City $city,
+        ForecastUtil $forecastUtil,
+    ): Response
+    {
+        return  $this->render('forecast/index.html.twig', [
+            'forecasts' => $forecastUtil->findByCity($city),
+        ]);
+    }
+
+    #[Route('/city2/{country_code}/{city_name}', name:"app_forecast_for_country_city2" , methods: ['GET'])]
+    public function byCity2(
+        Request $request,
+        string $country_code,
+        string $city_name,
+        ForecastUtil $forecastUtil,
+    ): Response
+    {
+        return  $this->render('forecast/index.html.twig', [
+            'forecasts' => $forecastUtil->findByCountryCodeAndCityName($country_code,$city_name),
+        ]);
+    }
+
     #[Route('/', name: 'app_forecast_index', methods: ['GET'])]
     #[IsGranted('ROLE_FORECAST_SHOW')]
     public function index(ForecastRepository $forecastRepository): Response

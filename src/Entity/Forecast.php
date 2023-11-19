@@ -96,6 +96,11 @@ class Forecast
         return $this;
     }
 
+    public function getFahrenheit(): ?float
+    {
+      return ($this->temperature * 9.0/5.0) + 32.0;
+    }
+
     public function getWindSpeed(): ?float
     {
         return $this->wind_speed;

@@ -1,0 +1,19 @@
+{
+  "city": {{ city }},
+  "country": {{ country }},
+  "forecasts": [
+    {% for forecast in forecasts %}
+    {
+      "temperature": {{ forecast.temperature }},
+      "timestamp": {
+        "date": {{ forecast.timestamp | date("c") }},
+        "timezone_type": 3,
+        "timezone": "UTC"
+      }
+    }
+    {% if not loop.last %}
+    ,
+    {% endif %}
+    {% endfor %}
+  ]
+}

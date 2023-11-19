@@ -39,7 +39,7 @@ class ForecastUtil
             ->andWhere("c.country = :country_code")
             ->setParameter("country_code",$country_code)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getSingleResult();
         return  $this->findByCity($city);
     }
 }

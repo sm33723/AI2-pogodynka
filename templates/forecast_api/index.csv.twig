@@ -1,0 +1,3 @@
+{% for forecast in forecasts %}
+{{city}},{{country}},{{forecast.temperature}},{{forecast.fahrenheit}},{{forecast.timestamp | date("c")}}
+{% endfor %}
